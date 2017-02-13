@@ -1,6 +1,19 @@
+import pandas as pd
+
+import string
+import nltk
+from nltk.tokenize import RegexpTokenizer
+from nltk.corpus import stopwords
+import re
+from nltk import word_tokenize
+from nltk.stem import WordNetLemmatizer
+
+from nltk.stem.porter import PorterStemmer
+from nltk.stem.lancaster import LancasterStemmer
+from nltk.stem import SnowballStemmer
+
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.decomposition import NMF, LatentDirichletAllocation
-import pandas as pd
 
 
 class CorpusExtractor(object):
@@ -26,7 +39,8 @@ class CorpusExtractor(object):
         corpus = corpus.fillna('')
         corpus = corpus.applymap(str)
         for index, row in corpus.iterrows():
-            similarity_score = CorpusExtractor.text_similarity_measure(row[0], row[1])
+            similarity_score = CorpusExtractor.text_similarity_measure(row[0],
+                                                                       row[1])
             if similarity_score > 0.5:
                 if len(row[0]) >= len(row[1]):
                     row[1] = ''
@@ -62,7 +76,6 @@ class CorpusExtractor(object):
         corpus = entire_corpus[key_word_boolean]
         return corpus
 
-
 class TopicModelling(object):
     """
     This class provides methods for applying Non-negative Matrix Factorization
@@ -76,18 +89,31 @@ class TopicModelling(object):
         """get top words from each topic"""
         topics = []
         for topic_idx, topic in enumerate(model.components_):
-            topics.append([['topic ' + str(topic_idx)],
-                           [vector.get_feature_names()[i] for i in
-                            topic.argsort()[:-n_top_words - 1:-1]]])
+            topics.append(['topic ' + (topic_idx+1) +
+                           vector.get_feature_names()[i] for i in
+                            topic.argsort()[:-n_top_words - 1:-1]])
         return topics
 
     def print_top_words(vector, model, n_top_words):
         """print top words from each topic"""
         for topic_idx, topic in enumerate(model.components_):
-            print("Topic #%d:" % topic_idx)
+            print("Topic #%d:" % (topic_idx+1))
             print(" ".join([vector.get_feature_names()[i]
                             for i in topic.argsort()[:-n_top_words - 1:-1]]))
         print()
+
+    def preprocess_corpus(corpus):
+        stop_words = stopwords.words("english")
+        lemmatizer = nltk.stem.WordNetLemmatizer()
+        for index, row in corpus.iteritems():
+            sentence = row.lower()
+            tokenizer = RegexpTokenizer(r'\w+')
+            tokens = tokenizer.tokenize(sentence)
+            filtered_words = [w for w in tokens if not w in stop_words]
+            lemmatized_words = [lemmatizer.lemmatize(w) for
+                                w in filtered_words]
+            corpus.loc[index] = " ".join(lemmatized_words)
+
 
     def model_vectorizer(vectorizer, n_features):
         """convert text corpus to tf or tfifd vectors"""
@@ -126,4 +152,4 @@ class TopicModelling(object):
                 learning_offset=50.,
                 random_state=0
             ).fit(vectorized_fit)
-        return vectorized, model
+        return vectorized, vectorized_fit,  model
