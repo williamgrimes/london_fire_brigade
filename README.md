@@ -2,6 +2,8 @@
 
 There are three main reasons for the decline in the number of fires in London since the 1980s. First, technologies have improved including fire retardant materials, smoke detectors, and sprinkler systems. Second, the London Fire Brigade’s (LFBs) active education and outreach programme has been very effective at raising awareness of fire safety issues. Finally, data has been methodically collected and used by the LFB to discover patterns, which has been key to identifying fire risk, leading to informed policy and decision making.
 
+
+
 The LFB collect a lot of data; each incident attended is recorded in a data set with 76 multiple choice  fields, including information about the time, location, and ignition source of a fire. The business intelligence unit at LFB do a fantastic job of analysing these data. In addition to this large categorical dataset Fire Investigators also write free text reports for more serious incidents. Since the year 2000 the LFB have amassed an archive of over 37,000 free text reports. This data gold mine has taken hundreds of hours to write, yet historical reports have been sitting dormant because it is difficult to quickly extract information from this volume of free text. If a human were to attempt to interpret this it would take 40 days, and 40 nights just to read it.
 
 Within Natural Language processing topic modelling is useful to discover abstract categories. We can explain topic modelling using the analogy of a library. As humans we intuitively cluster books into genres, such as sci-fi, crime or romance books. The librarian works to sort new books into the appropriate category. But what if we gave the librarian 100,000 books without any titles or prior knowledge of genres?
