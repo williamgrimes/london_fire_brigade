@@ -27,6 +27,6 @@ https://www.asidatascience.com/fellowship
 
 **Data science fellows:** William Grimes
 
-**Technical mentor:** Alessandra Staglianò
+**Technical mentor:** Alessandra Staglianò (https://www.linkedin.com/in/alessandra-staglian%C3%B2-1b72b88/)
 
 **Project manager:** Apollo Gerolymbos (https://www.linkedin.com/in/apollog/)
